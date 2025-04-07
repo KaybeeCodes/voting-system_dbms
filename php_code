@@ -45,25 +45,51 @@ if (isset($_POST['vote'])) {
 <head>
     <title>Online Voting System</title>
     <style>
-        body {
-            font-family: Arial;
-            background-color: #f0f0f0;
-            text-align: center;
-            padding: 40px;
-        }
-        form {
-            background: #fff;
-            display: inline-block;
-            padding: 20px;
-            margin: 10px;
-            border-radius: 10px;
-        }
-        input, select, button {
-            margin: 8px;
-            padding: 10px;
-            width: 200px;
-        }
-    </style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(to right, #d0d2f0, #f1f1f1);
+        color: #333;
+        text-align: center;
+        padding: 30px;
+    }
+    h1 {
+        color: #2c3e50;
+        margin-bottom: 40px;
+    }
+    h2 {
+        color: #34495e;
+        margin-top: 40px;
+    }
+    form {
+        background: #fff;
+        display: inline-block;
+        padding: 25px 30px;
+        margin: 15px;
+        border-radius: 12px;
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    }
+    input, select, button {
+        margin: 10px;
+        padding: 12px;
+        width: 250px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 15px;
+    }
+    button {
+        background: #2c3e50;
+        color: white;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    button:hover {
+        background: #1a242f;
+    }
+    select {
+        background-color: #f9f9f9;
+    }
+</style>
+
 </head>
 <body>
     <h1>Online Voting System</h1>
