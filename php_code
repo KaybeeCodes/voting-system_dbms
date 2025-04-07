@@ -1,0 +1,98 @@
+<?php
+$conn = new mysqli("localhost", "root", "", "voting_system");
+
+// Register logic
+if (isset($_POST['register'])) {
+    $name = $_POST['rname'];
+    $email = $_POST['remail'];
+    $password = $_POST['rpassword'];
+    $conn->query("INSERT INTO users (name, email, password) VALUES ('$name', '$email', '$password')");
+    echo "<script>alert('Registered! Login now.');</script>";
+}
+
+// Login logic
+if (isset($_POST['login'])) {
+    $email = $_POST['lemail'];
+    $password = $_POST['lpassword'];
+    $res = $conn->query("SELECT * FROM users WHERE email='$email' AND password='$password'");
+    if ($res->num_rows > 0) {
+        $user = $res->fetch_assoc();
+        $loggedIn = true;
+        $user_id = $user['id'];
+    } else {
+        echo "<script>alert('Invalid login');</script>";
+    }
+}
+
+// Vote logic
+if (isset($_POST['vote'])) {
+    $user_id = $_POST['user_id'];
+    $candidate_id = $_POST['candidate_id'];
+
+    $check = $conn->query("SELECT * FROM votes WHERE user_id=$user_id");
+    if ($check->num_rows == 0) {
+        $conn->query("INSERT INTO votes (user_id, candidate_id) VALUES ($user_id, $candidate_id)");
+        $conn->query("UPDATE candidates SET votes = votes + 1 WHERE id = $candidate_id");
+        echo "<script>alert('Vote cast successfully!');</script>";
+    } else {
+        echo "<script>alert('You have already voted!');</script>";
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Online Voting System</title>
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f0f0f0;
+            text-align: center;
+            padding: 40px;
+        }
+        form {
+            background: #fff;
+            display: inline-block;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 10px;
+        }
+        input, select, button {
+            margin: 8px;
+            padding: 10px;
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Online Voting System</h1>
+
+    <h2>Register</h2>
+    <form method="post">
+        <input type="text" name="rname" placeholder="Full Name" required><br>
+        <input type="email" name="remail" placeholder="Email" required><br>
+        <input type="password" name="rpassword" placeholder="Password" required><br>
+        <button type="submit" name="register">Register</button>
+    </form>
+
+    <h2>Login</h2>
+    <form method="post">
+        <input type="email" name="lemail" placeholder="Email" required><br>
+        <input type="password" name="lpassword" placeholder="Password" required><br>
+        <button type="submit" name="login">Login</button>
+    </form>
+
+    <?php if (isset($loggedIn) && $loggedIn): ?>
+    <h2>Vote Now</h2>
+    <form method="post">
+        <select name="candidate_id">
+            <option value="1">Candidate A</option>
+            <option value="2">Candidate B</option>
+        </select><br>
+        <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
+        <button type="submit" name="vote">Vote</button>
+    </form>
+    <?php endif; ?>
+</body>
+</html>
